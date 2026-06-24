@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>GG MOTOWASH - Login Administrator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+<style>
+
+:root{
+    --primary:#0ea5e9;
+    --primary-dark:#0284c7;
+    --secondary:#38bdf8;
+    --dark:#0f172a;
+    --muted:#64748b;
+    --border:#e2e8f0;
+    --card:rgba(255,255,255,.82);
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Plus Jakarta Sans',sans-serif;
+}
+
+html,
+body{
+    overflow-x:hidden;
+}
+
+body{
+    min-height:100vh;
+}
+
+.container{
+    min-height:100vh;
+    padding:40px 20px;
+    align-items:flex-start;
+}
+
+/* Background Blur */
+.bg-shape{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(100px);
+    opacity:.5;
+}
+
+.shape1{
+    width:400px;
+    height:400px;
+    background:#38bdf8;
+    top:-100px;
+    left:-100px;
+}
+
+.shape2{
+    width:500px;
+    height:500px;
+    background:#0ea5e9;
+    bottom:-200px;
+    right:-150px;
+}
+
+.container{
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    position:relative;
+    z-index:10;
+}
+
+.login-wrapper{
+    width:100%;
+    max-width:1100px;
+    min-height:650px;
+    display:grid;
+    grid-template-columns:1fr 450px;
+    overflow:hidden;
+
+    background:rgba(255,255,255,.35);
+    backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(25px);
+
+    border:1px solid rgba(255,255,255,.6);
+
+    border-radius:32px;
+
+    box-shadow:
+    0 25px 60px rgba(15,23,42,.12);
+}
+
+/* LEFT */
+.left-panel{
+    padding:70px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.logo{
+    width:80px;
+    height:80px;
+    border-radius:24px;
+
+    background:linear-gradient(
+    135deg,
+    var(--primary),
+    var(--secondary)
+    );
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:white;
+    font-size:36px;
+    font-weight:700;
+
+    margin-bottom:30px;
+
+    box-shadow:
+    0 20px 40px rgba(14,165,233,.35);
+}
+
+.left-panel h1{
+    font-size:52px;
+    line-height:1.1;
+    font-weight:700;
+    color:var(--dark);
+    margin-bottom:20px;
+}
+
+.left-panel p{
+    color:var(--muted);
+    font-size:17px;
+    line-height:1.8;
+    max-width:500px;
+}
+
+.feature-list{
+    margin-top:50px;
+}
+
+.feature{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:18px;
+}
+
+.check{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    background:#dbeafe;
+    color:var(--primary);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:700;
+}
+
+/* RIGHT */
+.login-card{
+    background:rgba(255,255,255,.85);
+    padding:50px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.login-header{
+    margin-bottom:40px;
+}
+
+.login-header h2{
+    font-size:32px;
+    color:var(--dark);
+    margin-bottom:10px;
+}
+
+.login-header p{
+    color:var(--muted);
+}
+
+.form-group{
+    margin-bottom:22px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:10px;
+    font-size:14px;
+    font-weight:600;
+}
+
+.input-wrapper{
+    position:relative;
+}
+
+.input-wrapper input{
+    width:100%;
+    padding:16px 18px;
+    border-radius:14px;
+    border:1px solid var(--border);
+    background:#fff;
+    font-size:15px;
+    outline:none;
+    transition:.3s;
+}
+
+.input-wrapper input:focus{
+    border-color:var(--primary);
+    box-shadow:
+    0 0 0 5px rgba(14,165,233,.12);
+}
+
+.btn-login{
+    width:100%;
+    padding:17px;
+
+    border:none;
+    border-radius:14px;
+
+    background:linear-gradient(
+    135deg,
+    var(--primary),
+    var(--primary-dark)
+    );
+
+    color:white;
+    font-size:15px;
+    font-weight:700;
+
+    cursor:pointer;
+    transition:.3s;
+
+    box-shadow:
+    0 15px 30px rgba(14,165,233,.35);
+}
+
+.btn-login:hover{
+    transform:translateY(-3px);
+}
+
+.error-message{
+    margin-top:18px;
+    padding:14px;
+    background:#fef2f2;
+    color:#ef4444;
+    border-radius:12px;
+    display:none;
+    font-size:14px;
+}
+
+.footer-text{
+    text-align:center;
+    margin-top:25px;
+    color:var(--muted);
+    font-size:13px;
+}
+
+@media(max-width:950px){
+
+    .login-wrapper{
+        grid-template-columns:1fr;
+    }
+
+    .left-panel{
+        display:none;
+    }
+
+    .login-card{
+        padding:35px;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="bg-shape shape1"></div>
+<div class="bg-shape shape2"></div>
+
+<div class="container">
+
+<div class="login-wrapper">
+
+    <div class="left-panel">
+
+        <div class="logo">S</div>
+
+        <h1>
+            GG MotoWash
+            <br>
+            System
+        </h1>
+
+        <p>
+            Kelola seluruh aktivitas usaha cuci steam secara
+            profesional, cepat, dan modern dalam satu dashboard.
+        </p>
+
+        <div class="feature-list">
+
+            <div class="feature">
+                <div class="check">✓</div>
+                <span>Monitoring transaksi real-time</span>
+            </div>
+
+            <div class="feature">
+                <div class="check">✓</div>
+                <span>Manajemen pelanggan & kendaraan</span>
+            </div>
+
+            <div class="feature">
+                <div class="check">✓</div>
+                <span>Laporan bisnis otomatis</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="login-card">
+
+        <div class="login-header">
+            <h2>Masuk</h2>
+            <p>Silakan login ke panel administrator</p>
+        </div>
+
+        <form id="loginForm">
+
+            <div class="form-group">
+                <label>Email Admin</label>
+                <div class="input-wrapper">
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="admin@email.com"
+                        required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Kata Sandi</label>
+                <div class="input-wrapper">
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="••••••••"
+                        required>
+                </div>
+            </div>
+
+            <button
+                type="submit"
+                class="btn-login"
+                id="submitBtn">
+                Masuk ke Dashboard
+            </button>
+
+            <div
+                class="error-message"
+                id="errorMessage">
+            </div>
+
+        </form>
+
+        <div class="footer-text">
+            © 2026 Steam Management System
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<script>
+    // 1. MASUKKAN KONFIGURASI FIREBASE ANDA DI SINI
+    const firebaseConfig = {
+        apiKey: "AIzaSyAOX0KrT92D1yvY2x6zgWKhQzNJC_HU8yE",
+        authDomain: "ggwash-system1.firebaseapp.com",
+        projectId: "ggwash-system1",
+        storageBucket: "ggwash-system1.firebasestorage.app",
+        messagingSenderId: "991027873318",
+        appId: "1:991027873318:web:f6866f3e8014a643e488e7",
+        measurementId: "G-57G9FG6L1C"
+    };
+
+    // 2. Inisialisasi Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const loginForm = document.getElementById('loginForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const errorMessage = document.getElementById('errorMessage');
+
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Memproses...';
+        errorMessage.style.display = 'none';
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            await auth.signInWithEmailAndPassword(email, password);
+            window.location.href = 'index.html'; // Arahkan ke dashboard
+        } catch (error) {
+            errorMessage.innerHTML = "Login gagal: Email atau Password salah.";
+            errorMessage.style.display = 'block';
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Masuk ke Dashboard';
+        }
+    });
+</script>
+
+</body>
+</html>
