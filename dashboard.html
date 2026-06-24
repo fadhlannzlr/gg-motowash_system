@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GG SHOP - Enterprise Steam Management</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <title>GG MOTOWASH - Dashboard Enterprise</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -17,64 +21,68 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.29/dist/jspdf.plugin.autotable.min.js"></script>
 </head>
-<body>
+<body class="dark-theme">
 
     <div class="saas-layout">
         <aside class="saas-sidebar">
             <div class="sidebar-header">
                 <div class="logo-box">
-                    <i class="fa-solid fa-droplet"></i>
+                    <i class="fa-solid fa-motorcycle"></i>
                 </div>
                 <div class="logo-text">
-                    <h2>GG STEAM</h2>
-                    <p>Enterprise Edition</p>
+                    <h2>GG MOTOWASH</h2>
+                    <p>System Admin v2.0</p>
                 </div>
             </div>
+            
             <nav class="sidebar-nav">
+                <p class="nav-label">MENU UTAMA</p>
                 <button class="nav-btn active" data-target="pos">
                     <i class="fa-solid fa-cash-register"></i> <span>Kasir & POS</span>
                 </button>
                 <button class="nav-btn" data-target="finance">
-                    <i class="fa-solid fa-chart-pie"></i> <span>Keuangan</span>
+                    <i class="fa-solid fa-chart-pie"></i> <span>Laporan Keuangan</span>
                 </button>
                 <button class="nav-btn" data-target="cashflow">
-                    <i class="fa-solid fa-wallet"></i> <span>Arus Kas</span>
+                    <i class="fa-solid fa-wallet"></i> <span>Manajemen Kas</span>
                 </button>
                 <button class="nav-btn" data-target="inventory">
-                    <i class="fa-solid fa-boxes-stacked"></i> <span>Inventaris</span>
+                    <i class="fa-solid fa-boxes-stacked"></i> <span>Stok & Aset</span>
                 </button>
                 <button class="nav-btn" data-target="history">
-                    <i class="fa-solid fa-clock-rotate-left"></i> <span>Riwayat</span>
+                    <i class="fa-solid fa-clock-rotate-left"></i> <span>Riwayat Transaksi</span>
                 </button>
             </nav>
+            
             <div class="sidebar-footer">
                 <button id="btnLogout" class="btn-logout">
-                    <i class="fa-solid fa-right-from-bracket"></i> <span>Keluar Sesi</span>
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Keluar Sesi</span>
                 </button>
             </div>
         </aside>
 
         <main class="saas-main">
-            <!-- Header Dashboard (Diperbarui) -->
             <header class="saas-header">
-                <div class="header-search">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <!-- Menghapus atribut 'disabled' dan menambahkan ID -->
-                    <input type="text" id="searchInput" placeholder="Cari nama pelanggan di riwayat...">
+                <div class="header-left">
+                    <h2 class="page-title">Dashboard Overview</h2>
+                    <p class="realtime-clock" id="liveClock">Memuat waktu...</p>
                 </div>
+                
                 <div class="header-profile">
-                    <div class="theme-toggle" id="btnTheme" style="cursor: pointer; font-size: 1.25rem; color: var(--text-muted); margin-right: 10px;">
-                        <i class="fa-solid fa-moon" id="themeIcon"></i>
+                    <div class="search-box">
+                        <i class="fa-solid fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Cari transaksi cepat...">
                     </div>
-
-                    <div class="notif-badge" id="btnNotif" style="cursor: pointer;">
-                        <i class="fa-regular fa-bell"></i><span class="pulse" id="notifPulse"></span>
+                    <div class="notif-badge" id="btnNotif">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="pulse" id="notifPulse"></span>
                     </div>
-                    
-                    <div class="avatar"><i class="fa-solid fa-user-tie"></i></div>
-                    <div class="admin-info">
-                        <h4>Admin GG</h4>
-                        <p>Superuser</p>
+                    <div class="user-profile">
+                        <div class="avatar"><i class="fa-solid fa-user-shield"></i></div>
+                        <div class="admin-info">
+                            <h4>Administrator</h4>
+                            <p>GG Motowash</p>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -82,28 +90,47 @@
             <div class="saas-content">
                 
                 <section id="pos" class="content-section active">
-                    <div class="hero-section">
-                        <div>
-                            <h1 class="hero-title">GG Steam Management</
-                            </h1>
-                            <p class="hero-subtitle">Proses pencucian kendaraan dengan cepat dan akurat.</p>
+                    <div class="kpi-grid-mini mb-4">
+                        <div class="kpi-mini-card">
+                            <div class="icon-wrap bg-green-glow"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                            <div class="data">
+                                <p>Pendapatan Hari Ini</p>
+                                <h3 id="pemHarian" class="text-green">Rp 0</h3>
+                            </div>
+                        </div>
+                        <div class="kpi-mini-card">
+                            <div class="icon-wrap bg-red-glow"><i class="fa-solid fa-arrow-trend-down"></i></div>
+                            <div class="data">
+                                <p>Pengeluaran Hari Ini</p>
+                                <h3 id="pengHarian" class="text-red">Rp 0</h3>
+                            </div>
+                        </div>
+                        <div class="kpi-mini-card outline-blue">
+                            <div class="icon-wrap bg-blue-glow"><i class="fa-solid fa-wallet"></i></div>
+                            <div class="data">
+                                <p>Laba Bersih Harian</p>
+                                <h3 id="labaHarian" class="text-blue">Rp 0</h3>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="card premium-card">
-                        <form id="formTransaksi">
+                    <div class="panel-card">
+                        <div class="panel-header">
+                            <h3><i class="fa-solid fa-cash-register text-blue"></i> Terminal Kasir</h3>
+                        </div>
+                        <form id="formTransaksi" class="pos-form">
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label>Nama Pelanggan (Opsional)</label>
                                     <div class="input-icon">
                                         <i class="fa-regular fa-user"></i>
-                                        <input type="text" id="namaPelanggan" placeholder="Contoh: Bpk. Budi">
+                                        <input type="text" id="namaPelanggan" placeholder="Contoh: Bpk. Budi / NMAX Hitam">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Metode Pembayaran</label>
                                     <div class="input-icon">
-                                        <i class="fa-solid fa-money-bill-transfer"></i>
+                                        <i class="fa-solid fa-money-bill-wave"></i>
                                         <select id="metodeBayar" required>
                                             <option value="qris">QRIS (Digital)</option>
                                             <option value="transfer">Transfer Bank</option>
@@ -113,8 +140,8 @@
                                 </div>
                             </div>
                             
-                            <div class="form-group mt-2">
-                                <label>Pilih Layanan Jasa</label>
+                            <div class="form-group mt-3">
+                                <label>Pilihan Layanan</label>
                                 <div class="service-options">
                                     <label class="service-card">
                                         <input type="radio" name="layanan" value="kilat" data-price="15000" data-sabun="30" required>
@@ -130,7 +157,7 @@
                                     <label class="service-card">
                                         <input type="radio" name="layanan" value="bersih" data-price="20000" data-sabun="50">
                                         <div class="service-detail">
-                                            <div class="sv-icon" style="background:#dcfce7; color:#16a34a;"><i class="fa-solid fa-sparkles"></i></div>
+                                            <div class="sv-icon text-green"><i class="fa-solid fa-sparkles"></i></div>
                                             <div class="sv-text">
                                                 <h4>Cuci Bersih</h4>
                                                 <p>Standard Cuci</p>
@@ -141,7 +168,7 @@
                                     <label class="service-card">
                                         <input type="radio" name="layanan" value="full" data-price="25000" data-sabun="70">
                                         <div class="service-detail">
-                                            <div class="sv-icon" style="background:#f3e8ff; color:#9333ea;"><i class="fa-solid fa-gem"></i></div>
+                                            <div class="sv-icon text-purple"><i class="fa-solid fa-gem"></i></div>
                                             <div class="sv-text">
                                                 <h4>Full Services</h4>
                                                 <p>Detailing + Semir</p>
@@ -152,7 +179,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn-primary btn-lg mt-3">
+                            <button type="submit" class="btn-primary btn-lg mt-4">
                                 <i class="fa-solid fa-check-circle"></i> Selesaikan Transaksi
                             </button>
                         </form>
@@ -161,63 +188,37 @@
 
                 <section id="finance" class="content-section">
                     <div class="section-header">
-                        <h2>Analytics & Financial</h2>
-                        <p>Pemantauan arus kas dan pendapatan perusahaan.</p>
-                    </div>
-                    
-                    <h3 class="group-title">Metrik Hari Ini</h3>
-                    <div class="kpi-grid mb-4">
-                        <div class="kpi-card">
-                            <div class="kpi-icon bg-green"><i class="fa-solid fa-arrow-trend-up"></i></div>
-                            <div class="kpi-data">
-                                <h3>Pemasukan</h3>
-                                <h2 id="pemHarian" class="text-green">Rp 0</h2>
-                            </div>
-                        </div>
-                        <div class="kpi-card">
-                            <div class="kpi-icon bg-red"><i class="fa-solid fa-arrow-trend-down"></i></div>
-                            <div class="kpi-data">
-                                <h3>Pengeluaran</h3>
-                                <h2 id="pengHarian" class="text-red">Rp 0</h2>
-                            </div>
-                        </div>
-                        <div class="kpi-card gradient-card">
-                            <div class="kpi-icon bg-white-trans"><i class="fa-solid fa-sack-dollar"></i></div>
-                            <div class="kpi-data text-white">
-                                <h3>Laba Bersih Harian</h3>
-                                <h2 id="labaHarian">Rp 0</h2>
-                            </div>
-                        </div>
+                        <h2>Analytics & Keuangan</h2>
+                        <p>Pemantauan arus kas bulanan perusahaan.</p>
                     </div>
 
-                    <h3 class="group-title">Akumulasi Bulan Ini</h3>
                     <div class="kpi-grid mb-4">
                         <div class="kpi-card">
-                            <div class="kpi-icon bg-green"><i class="fa-solid fa-money-bills"></i></div>
-                            <div class="kpi-data">
-                                <h3>Total Pemasukan</h3>
+                            <div class="icon-wrap bg-green-glow"><i class="fa-solid fa-money-bills"></i></div>
+                            <div class="data">
+                                <h3>Total Pemasukan Bulan Ini</h3>
                                 <h2 id="pemBulanan" class="text-green">Rp 0</h2>
                             </div>
                         </div>
                         <div class="kpi-card">
-                            <div class="kpi-icon bg-red"><i class="fa-solid fa-file-invoice"></i></div>
-                            <div class="kpi-data">
-                                <h3>Total Pengeluaran</h3>
+                            <div class="icon-wrap bg-red-glow"><i class="fa-solid fa-file-invoice"></i></div>
+                            <div class="data">
+                                <h3>Total Pengeluaran Bulan Ini</h3>
                                 <h2 id="pengBulanan" class="text-red">Rp 0</h2>
                             </div>
                         </div>
-                        <div class="kpi-card gradient-card-alt">
-                            <div class="kpi-icon bg-white-trans"><i class="fa-solid fa-vault"></i></div>
-                            <div class="kpi-data text-white">
+                        <div class="kpi-card gradient-blue">
+                            <div class="icon-wrap"><i class="fa-solid fa-vault"></i></div>
+                            <div class="data text-white">
                                 <h3>Saldo Kas Tersedia</h3>
                                 <h2 id="saldoAset">Rp 0</h2>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card premium-card chart-wrapper">
-                        <div class="chart-header">
-                            <h3>Grafik Arus Kas Mingguan</h3>
+                    <div class="panel-card">
+                        <div class="panel-header">
+                            <h3><i class="fa-solid fa-chart-line text-blue"></i> Grafik Arus Kas</h3>
                         </div>
                         <div class="chart-container">
                             <canvas id="dailyChart"></canvas>
@@ -228,55 +229,59 @@
                 <section id="cashflow" class="content-section">
                     <div class="section-header">
                         <h2>Manajemen Kas</h2>
-                        <p>Input pemasukan ekstra dan biaya operasional.</p>
-                    </div>
-                    
-                    <div class="modern-tabs">
-                        <button class="inner-tab-btn active" data-inner="formPengeluaran"><i class="fa-solid fa-arrow-up-right-from-square"></i> Catat Pengeluaran</button>
-                        <button class="inner-tab-btn" data-inner="formPemasukan"><i class="fa-solid fa-arrow-down-to-bracket"></i> Catat Pemasukan</button>
+                        <p>Input pengeluaran operasional dan pemasukan ekstra.</p>
                     </div>
 
-                    <div class="card premium-card">
+                    <div class="modern-tabs">
+                        <button class="inner-tab-btn active" data-inner="formPengeluaran">Catat Pengeluaran</button>
+                        <button class="inner-tab-btn" data-inner="formPemasukan">Catat Pemasukan Ekstra</button>
+                    </div>
+
+                    <div class="panel-card">
                         <form id="formPengeluaran" class="inner-content active">
-                            <div class="form-group">
-                                <label>Kategori Pengeluaran</label>
-                                <select id="katPengeluaran" required>
-                                    <option value="sewa">Sewa Tempat</option>
-                                    <option value="listrik_air">Listrik & Air</option>
-                                    <option value="bahan_baku">Beli Sabun/Semir/Peralatan</option>
-                                    <option value="gaji">Gaji Karyawan</option>
-                                    <option value="lainnya">Lain-lain</option>
-                                </select>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Kategori Pengeluaran</label>
+                                    <select id="katPengeluaran" required>
+                                        <option value="sewa">Sewa Tempat</option>
+                                        <option value="listrik_air">Listrik & Air</option>
+                                        <option value="bahan_baku">Beli Sabun/Semir/Alat</option>
+                                        <option value="gaji">Gaji Karyawan</option>
+                                        <option value="lainnya">Lain-lain</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Keterangan Detail</label>
+                                    <input type="text" id="ketPengeluaran" placeholder="Contoh: Beli token listrik" required>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>Keterangan Detail</label>
-                                <input type="text" id="ketPengeluaran" placeholder="Contoh: Beli token listrik" required>
-                            </div>
-                            <div class="form-group">
+                            <div class="form-group mt-3">
                                 <label>Jumlah Nominal (Rp)</label>
                                 <input type="text" id="nomPengeluaran" class="input-rupiah font-mono" placeholder="Rp 0" required>
                             </div>
-                            <button type="submit" class="btn-danger btn-lg"><i class="fa-solid fa-minus-circle"></i> Keluarkan Dana</button>
+                            <button type="submit" class="btn-danger btn-lg mt-4"><i class="fa-solid fa-minus-circle"></i> Keluarkan Dana</button>
                         </form>
 
                         <form id="formPemasukan" class="inner-content">
-                            <div class="form-group">
-                                <label>Sumber Pemasukan Tambahan</label>
-                                <select id="katPemasukan" required>
-                                    <option value="jual_barang">Jual Barang (Misal: Kanebo, Parfum)</option>
-                                    <option value="tip">Uang Tip / Ekstra</option>
-                                    <option value="lainnya">Pemasukan Lainnya</option>
-                                </select>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Sumber Pemasukan</label>
+                                    <select id="katPemasukan" required>
+                                        <option value="jual_barang">Jual Barang (Kanebo, Parfum)</option>
+                                        <option value="tip">Uang Tip / Ekstra</option>
+                                        <option value="lainnya">Lainnya</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Keterangan Detail</label>
+                                    <input type="text" id="ketPemasukan" placeholder="Contoh: Jual 1 Parfum Kopi" required>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>Keterangan Detail</label>
-                                <input type="text" id="ketPemasukan" placeholder="Contoh: Jual 1 Parfum" required>
-                            </div>
-                            <div class="form-group">
+                            <div class="form-group mt-3">
                                 <label>Jumlah Nominal (Rp)</label>
                                 <input type="text" id="nomPemasukan" class="input-rupiah font-mono" placeholder="Rp 0" required>
                             </div>
-                            <button type="submit" class="btn-success btn-lg"><i class="fa-solid fa-plus-circle"></i> Tambahkan ke Kas</button>
+                            <button type="submit" class="btn-success btn-lg mt-4"><i class="fa-solid fa-plus-circle"></i> Tambahkan ke Kas</button>
                         </form>
                     </div>
                 </section>
@@ -284,86 +289,74 @@
                 <section id="inventory" class="content-section">
                     <div class="section-header">
                         <h2>Stok & Aset Inventaris</h2>
-                        <p>Pemantauan *real-time* ketersediaan bahan dan alat.</p>
+                        <p>Pemantauan kapasitas bahan baku cairan dan alat fisik.</p>
                     </div>
-                    
-                    <div class="inventory-grid">
+
+                    <div class="inventory-grid mb-4">
                         <div class="inv-group">
-                            <h3 class="group-title">Bahan Habis Pakai (ml)</h3>
+                            <h3 class="group-title">Bahan Cairan (ml)</h3>
                             <div class="asset-card">
                                 <div class="ac-header">
-                                    <div class="ac-icon"><i class="fa-solid fa-soap"></i></div>
+                                    <div class="ac-icon bg-blue-glow"><i class="fa-solid fa-soap"></i></div>
                                     <div class="ac-info">
                                         <h4>Sabun Cuci</h4>
-                                        <div class="ac-amount"><span id="stokSabun">0</span> ml</div>
+                                        <div class="ac-amount"><span id="stokSabun">0</span> <small>ml</small></div>
                                     </div>
                                 </div>
-                                <div class="progress-bg"><div class="progress-fill bg-blue" style="width: 75%;"></div></div>
+                                <div class="progress-bg"><div class="progress-fill bg-blue" style="width: 0%;"></div></div>
                             </div>
                             <div class="asset-card mt-3">
                                 <div class="ac-header">
-                                    <div class="ac-icon"><i class="fa-solid fa-spray-can"></i></div>
+                                    <div class="ac-icon bg-purple-glow"><i class="fa-solid fa-spray-can"></i></div>
                                     <div class="ac-info">
                                         <h4>Semir Ban</h4>
-                                        <div class="ac-amount"><span id="stokSemir">0</span> ml</div>
+                                        <div class="ac-amount"><span id="stokSemir">0</span> <small>ml</small></div>
                                     </div>
                                 </div>
-                                <div class="progress-bg"><div class="progress-fill bg-purple" style="width: 50%;"></div></div>
+                                <div class="progress-bg"><div class="progress-fill bg-purple" style="width: 0%;"></div></div>
                             </div>
                         </div>
 
                         <div class="inv-group">
                             <h3 class="group-title">Peralatan Fisik (Pcs)</h3>
                             <div class="asset-card physical">
-                                <i class="fa-solid fa-mitten"></i>
+                                <div class="ac-icon"><i class="fa-solid fa-mitten"></i></div>
                                 <div class="ac-info">
                                     <h4>Lap Microfiber</h4>
-                                    <div class="ac-amount"><span id="stokMicrofiber">0</span> pcs</div>
+                                    <div class="ac-amount"><span id="stokMicrofiber">0</span> <small>pcs</small></div>
                                 </div>
                             </div>
                             <div class="asset-card physical">
-                                <i class="fa-solid fa-mitten"></i>
-                                <div class="ac-info">
-                                    <h4>Lap Kanebo</h4>
-                                    <div class="ac-amount"><span id="stokKanebo">0</span> pcs</div>
-                                </div>
-                            </div>
-                            <div class="asset-card physical">
-                                <i class="fa-solid fa-broom"></i>
+                                <div class="ac-icon"><i class="fa-solid fa-broom"></i></div>
                                 <div class="ac-info">
                                     <h4>Sikat Kasar</h4>
-                                    <div class="ac-amount"><span id="stokSikat">0</span> pcs</div>
+                                    <div class="ac-amount"><span id="stokSikat">0</span> <small>pcs</small></div>
                                 </div>
                             </div>
                             <div class="asset-card physical">
-                                <i class="fa-solid fa-paint-brush"></i>
+                                <div class="ac-icon"><i class="fa-solid fa-paint-brush"></i></div>
                                 <div class="ac-info">
                                     <h4>Kuas Detailer</h4>
-                                    <div class="ac-amount"><span id="stokKuas">0</span> pcs</div>
+                                    <div class="ac-amount"><span id="stokKuas">0</span> <small>pcs</small></div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card premium-card mt-4">
-                        <div class="chart-header" style="margin-bottom: 1.5rem;">
-                            <h3>Input / Koreksi Stok</h3>
+                    <div class="panel-card">
+                        <div class="panel-header">
+                            <h3><i class="fa-solid fa-box-open text-blue"></i> Input / Koreksi Stok</h3>
                         </div>
                         <form id="formStok">
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label>Pilih Item / Barang</label>
                                     <select id="itemStok" required>
-                                        <optgroup label="Bahan Cairan (ml)">
-                                            <option value="sabun">Sabun Cuci</option>
-                                            <option value="semir">Semir Ban</option>
-                                        </optgroup>
-                                        <optgroup label="Peralatan (pcs)">
-                                            <option value="microfiber">Lap Microfiber</option>
-                                            <option value="sikat">Sikat Kasar</option>
-                                            <option value="kuas">Kuas Detailer</option>
-                                            <option value="kanebo">Lap Kanebo</option>
-                                        </optgroup>
+                                        <option value="sabun">Sabun Cuci (ml)</option>
+                                        <option value="semir">Semir Ban (ml)</option>
+                                        <option value="microfiber">Lap Microfiber (pcs)</option>
+                                        <option value="sikat">Sikat Kasar (pcs)</option>
+                                        <option value="kuas">Kuas Detailer (pcs)</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -374,45 +367,44 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mt-3">
                                 <label>Jumlah</label>
-                                <input type="number" id="jumlahStok" placeholder="Masukkan jumlah..." required min="1">
+                                <input type="number" id="jumlahStok" placeholder="Masukkan angka..." required min="1">
                             </div>
-                            <button type="submit" class="btn-primary mt-2"><i class="fa-solid fa-rotate"></i> Sinkronisasi Data Stok</button>
+                            <button type="submit" class="btn-primary mt-4"><i class="fa-solid fa-rotate"></i> Sinkronisasi Stok</button>
                         </form>
                     </div>
                 </section>
 
                 <section id="history" class="content-section">
-                    <div class="section-header history-wrap">
-                        <div>
-                            <h2>Riwayat Data Transaksi</h2>
-                            <p>Database mutasi dan log kasir.</p>
+                    <div class="history-wrap mb-3">
+                        <div class="section-header mb-0">
+                            <h2>Riwayat Transaksi</h2>
+                            <p>Database mutasi pencucian kendaraan.</p>
                         </div>
                         <div class="action-buttons">
                             <button id="btnExportExcel" class="btn-tool btn-excel"><i class="fa-solid fa-file-excel"></i> Excel</button>
                             <button id="btnExportPDF" class="btn-tool btn-pdf"><i class="fa-solid fa-file-pdf"></i> PDF</button>
-                            <button id="btnClearAll" class="btn-tool btn-clear"><i class="fa-solid fa-trash-can"></i> Kosongkan</button>
+                            <button id="btnClearAll" class="btn-tool btn-clear"><i class="fa-solid fa-trash-can"></i> Bersihkan</button>
                         </div>
                     </div>
 
-                    <div class="card premium-card p-0 overflow-hidden">
+                    <div class="panel-card p-0">
                         <div class="table-container">
                             <table class="modern-table">
                                 <thead>
                                     <tr>
                                         <th>No</th>
                                         <th>Waktu Transaksi</th>
-                                        <th>Nama Pelanggan</th>
-                                        <th>Jenis Jasa</th>
+                                        <th>Pelanggan</th>
+                                        <th>Layanan</th>
                                         <th>Total Bayar</th>
                                         <th>Metode</th>
                                         <th style="text-align: center;">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tableRiwayatBody">
-                                    <tr><td colspan="7" class="empty-row-text">Belum ada data transaksi yang tercatat.</td></tr>
-                                </tbody>
+                                    </tbody>
                             </table>
                         </div>
                     </div>
