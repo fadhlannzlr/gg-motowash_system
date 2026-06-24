@@ -62,7 +62,7 @@ async function loadDataDariFirebase() {
 document.addEventListener("DOMContentLoaded", () => {
     auth.onAuthStateChanged(user => {
         if (!user) {
-            window.location.href = 'login.html'; // Kembali ke halaman login jika belum masuk
+            window.location.href = 'index.html'; // <--- Ganti dari login.html jadi index.html
         } else {
             initChart(); loadDataDariFirebase();
         }
@@ -357,7 +357,8 @@ if (btnLogout) {
     btnLogout.addEventListener('click', () => {
         Swal.fire({ title: 'Akhiri Sesi?', icon: 'question', showCancelButton: true, confirmButtonColor: '#0ea5e9', confirmButtonText: 'Keluar' }).then(async (r) => { 
             if (r.isConfirmed) {
-                await auth.signOut(); // Akhiri sesi di Firebase
+                await auth.signOut(); 
+                window.location.href = 'index.html'; // <--- Ganti dari login.html jadi index.html
             }
         });
     });
