@@ -419,9 +419,11 @@ body{
 
         try {
             await auth.signInWithEmailAndPassword(email, password);
-            window.location.href = 'index.html'; // Arahkan ke dashboard
+            window.location.href = 'dashboard.html'; // <--- ARAHKAN KE DASHBOARD
         } catch (error) {
-            errorMessage.innerHTML = "Login gagal: Email atau Password salah.";
+            // Tambahkan ini agar kita tahu pasti apa alasan Firebase menolak
+            console.error("Firebase Error: ", error.message); 
+            errorMessage.innerHTML = `Login gagal: ${error.message}`;
             errorMessage.style.display = 'block';
             submitBtn.disabled = false;
             submitBtn.textContent = 'Masuk ke Dashboard';
